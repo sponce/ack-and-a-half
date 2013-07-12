@@ -379,6 +379,8 @@ non-nil, treat FROM as a regular expression."
                             arguments
                             (list "--")
                             (list (shell-quote-argument pattern))
+                            (when (eq system-type 'windows-nt)
+                              (list (concat " < " null-device)))
                             ))
     (make-local-variable 'compilation-buffer-name-function)
     (let (compilation-buffer-name-function)
