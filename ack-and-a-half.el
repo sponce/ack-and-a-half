@@ -180,6 +180,10 @@ confirmed.  If t, then always prompt for the directory to use."
                  (const :tag "Don't prompt when guessed" unless-guessed)
                  (const :tag "Always prompt" t)))
 
+(defcustom ack-and-a-half-use-ido nil
+  "Whether or not ack-and-a-half should use ido to provide
+  completion suggestions when prompting for directory.")
+
 ;;; Default setting lists ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst ack-and-a-half-mode-type-default-alist
@@ -316,7 +320,9 @@ This is intended to be used in `ack-and-a-half-root-directory-functions'."
     (if ack-and-a-half-prompt-for-directory
         (if (and dir (eq ack-and-a-half-prompt-for-directory 'unless-guessed))
             dir
-          (read-directory-name "Directory: " dir dir t))
+          (if ack-and-a-half-use-ido
+              (ido-read-directory-name "Directory: " dir dir t)
+            (read-directory-name "Directory: " dir dir t)))
       (or dir
           (and buffer-file-name (file-name-directory buffer-file-name))
           default-directory))))
