@@ -2,10 +2,12 @@
 ;;
 ;; Copyright (C) 2013 Jacob Helwig <jacob@technosorcery.net>
 ;; Alexey Lebedeff <binarin@binarin.ru>
+;; Andrew Pennebaker <andrew.pennebaker@gmail.com>
 ;; Andrew Stine <stine.drew@gmail.com>
 ;; Derek Chen-Becker <derek@precog.com>
 ;; Gleb Peregud <gleber.p@gmail.com>
 ;; Kim van Wyk <vanwykk@gmail.com>
+;; Lars Andersen <expez@expez.com>
 ;; Ronaldo M. Ferraz <ronaldoferraz@gmail.com>
 ;; Ryan Thompson <rct@thompsonclan.org>
 ;;
