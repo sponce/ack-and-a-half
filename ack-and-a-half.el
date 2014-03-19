@@ -317,6 +317,11 @@ This is intended to be used in `ack-and-a-half-root-directory-functions'."
                  (if regexp 'ack-regexp-history 'ack-literal-history)
                  default)))
 
+(defsubst ack-and-a-half-read-args ()
+  (let* ((default "--type=hh")
+         (prompt  (format "extra args (default %s): " default)))
+    (read-string prompt nil nil default)))
+
 (defun ack-and-a-half-read-dir ()
   (let ((dir (run-hook-with-args-until-success 'ack-and-a-half-root-directory-functions)))
     (if ack-and-a-half-prompt-for-directory
@@ -338,6 +343,14 @@ This is intended to be used in `ack-and-a-half-root-directory-functions'."
     (list (ack-and-a-half-read regexp)
           regexp
           (ack-and-a-half-read-dir))))
+
+(defun ack-and-a-half-interactive-args ()
+  "Return the (interactive) arguments for `ack-and-a-arg'."
+  (let ((regexp (ack-and-a-half-xor current-prefix-arg ack-and-a-half-regexp-search)))
+    (list (ack-and-a-half-read regexp)
+          regexp
+          (ack-and-a-half-read-dir)
+          (ack-and-a-half-read-args))))
 
 (defun ack-and-a-half-type ()
   (or (ack-and-a-half-type-for-major-mode major-mode)
@@ -474,6 +487,20 @@ prompted, if `ack-and-a-half-prompt-for-directory' is set.`"
     (if type
         (apply 'ack-and-a-half-run directory regexp pattern type)
       (ack-and-a-half pattern regexp directory))))
+
+(defun ack-and-a-half-args (pattern &optional regexp directory type)
+  "Run ack.
+PATTERN is interpreted as a regular expression, iff REGEXP is
+non-nil.  If called interactively, the value of REGEXP is
+determined by `ack-and-a-half-regexp-search'.  A prefix arg
+toggles the behavior.  DIRECTORY is the root directory.  If
+called interactively, it is determined by
+`ack-and-a-half-project-root-file-patterns'.  The user is only
+prompted, if `ack-and-a-half-prompt-for-directory' is set.
+ARGUMENTS are extra arguments to pass to ack. If called
+interactively, it is determined by `ack-and-a-half-read-args' "
+  (interactive (ack-and-a-half-interactive-args))
+  (ack-and-a-half-run directory regexp pattern type))
 
 ;;;###autoload
 (defun ack-and-a-half-find-file (&optional directory)
